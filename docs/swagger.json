@@ -1,12 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Car Management API",
-    "description": "API documentation for Car Management System",
+    "title": "Binar Car API",
     "version": "1.0.0",
-    "contact": {
-      "email": "your-email@example.com"
-    }
+    "description": "API documentation for Binar Car rental service"
   },
   "servers": [
     {
@@ -14,573 +11,52 @@
       "description": "Development server"
     }
   ],
-  "tags": [
-    {
-      "name": "Cars",
-      "description": "Car management endpoints"
-    },
-    {
-      "name": "Users",
-      "description": "User management endpoints"
-    }
-  ],
-  "paths": {
-    "/cars": {
-      "get": {
-        "tags": ["Cars"],
-        "summary": "Get all cars",
-        "description": "Retrieve all cars with optional filters",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Filter by car name"
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Filter by car type"
-          },
-          {
-            "in": "query",
-            "name": "minPrice",
-            "schema": {
-              "type": "number"
-            },
-            "description": "Minimum price filter"
-          },
-          {
-            "in": "query",
-            "name": "maxPrice",
-            "schema": {
-              "type": "number"
-            },
-            "description": "Maximum price filter"
-          },
-          {
-            "in": "query",
-            "name": "available",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Filter by availability"
-          },
-          {
-            "in": "query",
-            "name": "createdBy",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Filter by creator ID"
-          },
-          {
-            "in": "query",
-            "name": "creatorName",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Filter by creator name"
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string",
-              "default": "createdAt"
-            },
-            "description": "Field to sort by"
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "schema": {
-              "type": "string",
-              "enum": ["ASC", "DESC"],
-              "default": "DESC"
-            },
-            "description": "Sort order"
-          },
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            },
-            "description": "Page number for pagination"
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            },
-            "description": "Number of items per page"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Cars retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarListResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["Cars"],
-        "summary": "Create a new car",
-        "description": "Create a new car (Admin/Superadmin only)",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Car created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ForbiddenResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cars/{id}": {
-      "get": {
-        "tags": ["Cars"],
-        "summary": "Get car by ID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Car ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Car retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Car not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": ["Cars"],
-        "summary": "Update car",
-        "description": "Update car details (Admin/Superadmin only)",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Car ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CarInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Car updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CarResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ForbiddenResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Car not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Cars"],
-        "summary": "Delete car",
-        "description": "Delete car (Admin/Superadmin only)",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Car ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Car deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ForbiddenResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Car not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/login": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "User login",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/register": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "Register new user",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Registration successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/me": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get current user",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
-      "CarInput": {
+      "LoginRequest": {
         "type": "object",
-        "required": ["name", "type", "price"],
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "superadmin@binar.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "superadmin123"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "zainal@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          },
+          "name": {
+            "type": "string",
+            "example": "Zainal"
+          }
+        }
+      },
+      "CarRequest": {
+        "type": "object",
+        "required": ["name", "type", "price", "available", "image"],
         "properties": {
           "name": {
             "type": "string",
@@ -600,228 +76,374 @@
           },
           "image": {
             "type": "string",
+            "format": "uri",
             "example": "https://example.com/car-image.jpg"
           }
         }
-      },
-      "CarResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "Success"
-          },
-          "message": {
-            "type": "string"
-          },
-          "isSuccess": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/Car"
+      }
+    }
+  },
+  "paths": {
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
           }
-        }
-      },
-      "CarListResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "Success"
-          },
-          "message": {
-            "type": "string"
-          },
-          "isSuccess": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "cars": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Car"
-                }
-              },
-              "pagination": {
-                "type": "object",
-                "properties": {
-                  "currentPage": {
-                    "type": "integer"
-                  },
-                  "totalPages": {
-                    "type": "integer"
-                  },
-                  "totalItems": {
-                    "type": "integer"
-                  },
-                  "itemsPerPage": {
-                    "type": "integer"
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Login successful",
+                  "isSuccess": true,
+                  "data": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "user": {
+                      "id": 1,
+                      "email": "superadmin@binar.com",
+                      "role": "superadmin"
+                    }
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Invalid email or password",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
           }
         }
-      },
-      "Car": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Registration successful",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 2,
+                    "email": "zainal@gmail.com",
+                    "name": "Zainal",
+                    "role": "member"
+                  }
+                }
+              }
+            }
           },
-          "name": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "available": {
-            "type": "boolean"
-          },
-          "image": {
-            "type": "string"
-          },
-          "createdBy": {
-            "type": "integer"
-          },
-          "updatedBy": {
-            "type": "integer"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
+          "400": {
+            "description": "Invalid email format",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Email format is invalid",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
           }
         }
-      },
-      "LoginInput": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "user@example.com"
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current user information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User information retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "User retrieved successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 1,
+                    "email": "superadmin@binar.com",
+                    "name": "Super Admin",
+                    "role": "superadmin",
+                    "createdAt": "2024-11-03T00:38:12.556Z",
+                    "updatedAt": "2024-11-03T00:38:12.556Z",
+                    "deletedAt": null
+                  }
+                }
+              }
+            }
           },
-          "password": {
-            "type": "string",
-            "format": "password",
-            "example": "password123"
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Invalid token",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
           }
         }
-      },
-      "RegisterInput": {
-        "type": "object",
-        "required": ["email", "password", "name"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email"
+      }
+    },
+    "/users/admin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new admin user (Superadmin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "admin2@binar.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Admin 2"
+                  }
+                },
+                "required": ["email", "password", "name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Admin created successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 3,
+                    "email": "admin2@binar.com",
+                    "name": "Admin 2",
+                    "role": "admin"
+                  }
+                }
+              }
+            }
           },
-          "password": {
-            "type": "string",
-            "format": "password"
-          },
-          "name": {
-            "type": "string"
+          "403": {
+            "description": "Access forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Access forbidden",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
           }
         }
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
+      }
+    },
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create new car (Admin & SuperAdmin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Car created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Car created successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 1,
+                    "name": "Toyota Camry",
+                    "type": "Sedan",
+                    "price": 35000,
+                    "available": true,
+                    "image": "https://example.com/car-image.jpg",
+                    "createdBy": 1,
+                    "updatedBy": 1,
+                    "deletedAt": null,
+                    "createdAt": "2024-11-03T03:06:11.807Z",
+                    "updatedAt": "2024-11-03T03:06:11.807Z",
+                    "creator": {
+                      "id": 1,
+                      "name": "Super Admin",
+                      "email": "superadmin@binar.com"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "message": {
-            "type": "string"
-          },
-          "isSuccess": {
-            "type": "boolean"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "token": {
-                "type": "string"
-              },
-              "user": {
-                "$ref": "#/components/schemas/User"
+          "403": {
+            "description": "Access forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Access forbidden",
+                  "isSuccess": false,
+                  "data": null
+                }
               }
             }
           }
         }
       },
-      "UserResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all cars",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
           },
-          "message": {
-            "type": "string"
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cars retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Cars retrieved successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "cars": [
+                      {
+                        "id": 1,
+                        "name": "Toyota Camry",
+                        "type": "Sedan",
+                        "price": 35000,
+                        "available": true,
+                        "image": "https://example.com/car-image.jpg",
+                        "createdBy": 1,
+                        "updatedBy": 1,
+                        "deletedAt": null,
+                        "createdAt": "2024-11-03T03:06:11.807Z",
+                        "updatedAt": "2024-11-03T03:06:11.807Z",
+                        "creator": {
+                          "id": 1,
+                          "name": "Super Admin",
+                          "email": "superadmin@binar.com"
+                        }
+                      }
+                    ],
+                    "pagination": {
+                      "currentPage": 1,
+                      "totalPages": 1,
+                      "totalItems": 1,
+                      "itemsPerPage": 10
+                    }
+                  }
+                }
+              }
+            }
           },
-          "isSuccess": {
-            "type": "boolean"
-          },
-          "data": {
-            "$ref": "#/components/schemas/User"
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Failed to retrieve cars data",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
           }
         }
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": ["member", "admin", "superadmin"]
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "Failed"
-          },
-          "message": {
-            "type": "string"
-          },
-          "isSuccess": {
-            "type": "boolean",
-            "example": false
-          },
-          "data": {
-            "type": "null"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "BearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
   }
