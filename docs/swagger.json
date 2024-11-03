@@ -445,6 +445,253 @@
           }
         }
       }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get car by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the car to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Car retrieved successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 1,
+                    "name": "Toyota Camry",
+                    "type": "Sedan",
+                    "price": 35000,
+                    "available": true,
+                    "image": "https://example.com/car-image.jpg",
+                    "createdBy": 1,
+                    "updatedBy": 1,
+                    "deletedBy": null,
+                    "createdAt": "2024-11-03T03:06:11.807Z",
+                    "updatedAt": "2024-11-03T03:06:11.807Z",
+                    "deletedAt": null,
+                    "creator": {
+                      "id": 1,
+                      "name": "Super Admin",
+                      "email": "superadmin@binar.com"
+                    },
+                    "updater": {
+                      "id": 1,
+                      "name": "Super Admin",
+                      "email": "superadmin@binar.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Car not found",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cars"],
+        "summary": "Update car details (Admin & Superadmin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the car to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Mobil Kesayangan akuu"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "Hotwheels"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 35000
+                  },
+                  "available": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://example.com/car-image.jpg"
+                  }
+                },
+                "required": ["name", "type", "price", "available", "image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Car updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Car updated successfully",
+                  "isSuccess": true,
+                  "data": {
+                    "id": 1,
+                    "name": "Mobil Kesayangan akuu",
+                    "type": "Hotwheels",
+                    "price": 35000,
+                    "available": true,
+                    "image": "https://example.com/car-image.jpg",
+                    "createdBy": 1,
+                    "updatedBy": 3,
+                    "deletedBy": null,
+                    "createdAt": "2024-11-03T03:06:11.807Z",
+                    "updatedAt": "2024-11-03T11:20:13.762Z",
+                    "deletedAt": null,
+                    "creator": {
+                      "id": 1,
+                      "name": "Super Admin",
+                      "email": "superadmin@binar.com"
+                    },
+                    "updater": {
+                      "id": 3,
+                      "name": "Admin 2",
+                      "email": "admin2@binar.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Car not found",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Access forbidden",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "summary": "Delete car by ID (Admin & Superadmin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the car to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Success",
+                  "message": "Car deleted successfully",
+                  "isSuccess": true,
+                  "data": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Car not found",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "Failed",
+                  "message": "Access forbidden",
+                  "isSuccess": false,
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
