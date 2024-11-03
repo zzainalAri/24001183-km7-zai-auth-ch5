@@ -80,6 +80,83 @@
             "example": "https://example.com/car-image.jpg"
           }
         }
+      },
+      "CarResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Toyota Camry" },
+          "type": { "type": "string", "example": "Sedan" },
+          "price": { "type": "number", "example": 35000 },
+          "available": { "type": "boolean", "example": true },
+          "image": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/car-image.jpg"
+          },
+          "createdBy": { "type": "integer", "example": 1 },
+          "updatedBy": { "type": "integer", "example": 3 },
+          "deletedBy": { "type": ["integer", "null"], "example": null },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-03T03:06:11.807Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-03T11:20:13.762Z"
+          },
+          "deletedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "example": null
+          },
+          "creator": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer", "example": 1 },
+              "name": { "type": "string", "example": "Super Admin" },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "superadmin@binar.com"
+              }
+            }
+          },
+          "updater": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer", "example": 3 },
+              "name": { "type": "string", "example": "Admin 2" },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "admin2@binar.com"
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "Failed" },
+          "message": { "type": "string", "example": "Car not found" },
+          "isSuccess": { "type": "boolean", "example": false },
+          "data": { "type": ["object", "null"], "example": null }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "Success" },
+          "message": {
+            "type": "string",
+            "example": "Car updated successfully"
+          },
+          "isSuccess": { "type": "boolean", "example": true }
+        }
       }
     }
   },
