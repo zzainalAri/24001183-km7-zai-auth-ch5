@@ -57,5 +57,3 @@ REST API for Binar Car Rental built with Express.js and PostgreSQL.
 - GET /api/v1/cars/:id - Get car by ID (Admin/Superadmin)
 - PUT /api/v1/cars/:id - Update car (Admin/Superadmin)
 - DELETE /api/v1/cars/:id - Delete car (Admin/Superadmin)
-
-![My Image](/public/images/db-diagram.png)
